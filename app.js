@@ -4,14 +4,19 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
 const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc'); // ✅ tên đúng
+const swaggerJsdoc = require('swagger-jsdoc');
 
-require('dotenv').config();
+dotenv.config(); // ✅ Load biến môi trường
 const app = express();
 
-// Middleware
+// === CORS cấu hình đúng và đặt trước ROUTES ===
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+}));
+
+// Middleware khác
 app.use(express.json());
-app.use(cors());
 app.use(morgan('dev'));
 app.use('/upload', express.static('uploads'));
 
@@ -38,16 +43,11 @@ const swaggerOptions = {
   apis: ['./routes/*.js'],
 };
 
-
-const swaggerSpec = swaggerJsdoc(swaggerOptions); // ✅ đúng tên hàm
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api/posts', require('./routes/post.routes'));
-app.use(cors({
-  origin: process.env.CLIENT_URL,
-  credentials: true // nếu bạn dùng cookie hoặc JWT với header
-}));
-// app.use(cors()); // ✅ bật lại dòng này nếu đã có file
 
 // Routes
-app.use('/api/auth', require('./routes/auth.routes')); // ✅ bật lại dòng này nếu đã có file
+app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/posts', require('./routes/post.routes'));
+
 module.exports = app;
