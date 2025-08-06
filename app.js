@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc'); // ✅ tên đúng
 
-dotenv.config();
+require('dotenv').config();
 const app = express();
 
 // Middleware
@@ -42,7 +42,11 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions); // ✅ đúng tên hàm
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/posts', require('./routes/post.routes'));
-
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true // nếu bạn dùng cookie hoặc JWT với header
+}));
+// app.use(cors()); // ✅ bật lại dòng này nếu đã có file
 
 // Routes
 app.use('/api/auth', require('./routes/auth.routes')); // ✅ bật lại dòng này nếu đã có file
