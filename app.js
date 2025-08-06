@@ -49,5 +49,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Routes
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/posts', require('./routes/post.routes'));
+app.use((err, req, res, next) => {
+  if (err.message.includes('Chỉ cho phép')) {
+    return res.status(400).json({ success: false, message: err.message });
+  }
+  next(err);
+});
+
 
 module.exports = app;
