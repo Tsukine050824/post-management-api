@@ -1,7 +1,7 @@
 // routes/auth.routes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const authController = require('../controllers/auth.controller');
+const authController = require("../controllers/auth.controller");
 
 /**
  * @swagger
@@ -34,7 +34,7 @@ const authController = require('../controllers/auth.controller');
  *       201:
  *         description: Đăng ký thành công
  */
-router.post('/register', authController.register);
+router.post("/register", authController.register);
 
 /**
  * @swagger
@@ -60,6 +60,6 @@ router.post('/register', authController.register);
  *       200:
  *         description: Đăng nhập thành công, trả về token
  */
-router.post('/login', authController.login);
+router.post("/login", authController.login);
 
 module.exports = router;

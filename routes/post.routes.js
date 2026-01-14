@@ -1,18 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const postController = require('../controllers/post.controller');
-const verifyToken = require('../middlewares/verifyToken');
-const upload = require('../middlewares/upload');
+const postController = require("../controllers/post.controller");
+const verifyToken = require("../middlewares/verifyToken");
+const upload = require("../middlewares/upload");
 
-// ✅ Route tìm kiếm cần đặt trước để không bị nhầm với :id
-router.get('/search', postController.searchPosts);
+// Route tìm kiếm cần đặt trước để không bị nhầm với :id
+router.get("/search", postController.searchPosts);
 
-// ✅ Các route còn lại
-router.get('/', postController.getAllPosts);
-router.get('/:id', postController.getPostById);
-router.post('/', verifyToken, upload.single('thumbnail'), postController.createPost);
-router.put('/:id', verifyToken, postController.updatePost);
-router.delete('/:id', verifyToken, postController.deletePost);
+// Các route chính
+router.get("/", postController.getAllPosts);
+router.get("/:id", postController.getPostById);
+router.post(
+  "/",
+  verifyToken,
+  upload.single("thumbnail"),
+  postController.createPost
+);
+router.put(
+  "/:id",
+  verifyToken,
+  upload.single("thumbnail"),
+  postController.updatePost
+);
+router.delete("/:id", verifyToken, postController.deletePost);
 
 /**
  * @swagger
@@ -42,7 +52,7 @@ router.delete('/:id', verifyToken, postController.deletePost);
  *       201:
  *         description: Tạo bài viết thành công
  */
-router.post('/', verifyToken, upload.single('thumbnail'), postController.createPost);
+// (swagger docs omitted for brevity)
 
 /**
  * @swagger
@@ -75,7 +85,7 @@ router.post('/', verifyToken, upload.single('thumbnail'), postController.createP
  *       200:
  *         description: Danh sách bài viết
  */
-router.get('/', postController.getAllPosts);
+// duplicate swagger docs removed
 
 /**
  * @swagger
@@ -93,25 +103,7 @@ router.get('/', postController.getAllPosts);
  *       200:
  *         description: Chi tiết bài viết
  */
-router.get('/:id', postController.getPostById);
-
-/**
- * @swagger
- * /api/posts/{id}:
- *   get:
- *     summary: Lấy chi tiết một bài viết
- *     tags: [Post]
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Chi tiết bài viết
- */
-router.get('/:id', postController.getPostById);
+// keep single definition above
 
 /**
  * @swagger
@@ -146,7 +138,7 @@ router.get('/:id', postController.getPostById);
  *       403:
  *         description: Không có quyền sửa bài viết
  */
-router.put('/:id', verifyToken, postController.updatePost);
+// handled above with multer
 
 /**
  * @swagger
@@ -168,7 +160,7 @@ router.put('/:id', verifyToken, postController.updatePost);
  *       403:
  *         description: Không có quyền xoá bài viết
  */
-router.delete('/:id', verifyToken, postController.deletePost);
+// handled above
 
 /**
  * @swagger
@@ -187,8 +179,5 @@ router.delete('/:id', verifyToken, postController.deletePost);
  *       200:
  *         description: Danh sách bài viết khớp
  */
-router.get('/search', postController.searchPosts);
-
-
-
+// already defined at top
 module.exports = router;
