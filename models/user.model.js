@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  avatar: {
+    type: String,
+    default: null,
+  },
 });
 
 // Mã hóa mật khẩu trước khi lưu

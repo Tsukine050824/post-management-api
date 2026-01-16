@@ -29,8 +29,8 @@ export default function PostDetails({ id, token, onBack, onUpdated }) {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
-  if (!post) return <p>No post</p>;
+  if (loading) return <p className="loading">Loading...</p>;
+  if (!post) return <p className="error">No post found</p>;
 
   const currentUserId = token ? decodeToken(token)?.id : null;
   const canEdit =
@@ -71,16 +71,26 @@ export default function PostDetails({ id, token, onBack, onUpdated }) {
   }
 
   return (
-    <div>
-      <button onClick={onBack}>Back</button>
+    <div className="post-details">
+      <div className="post-details-header">
+        <button onClick={onBack}>← Back</button>
+      </div>
       {editing ? (
-        <div style={{ display: "grid", gap: 8 }}>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} />
+        <div className="form-container">
+          <h2 style={{ textAlign: "center", marginBottom: "10px", color: "#667eea" }}>
+            Edit Post
+          </h2>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            placeholder="Content"
           />
-          <div>
+          <div className="file-input-container">
             <label>Change thumbnail:</label>
             <input
               type="file"
@@ -88,47 +98,45 @@ export default function PostDetails({ id, token, onBack, onUpdated }) {
               onChange={(e) => setNewFile(e.target.files[0])}
             />
             {newFile && (
-              <div style={{ marginTop: 8 }}>
+              <div className="file-preview">
                 <img
                   src={URL.createObjectURL(newFile)}
                   alt="new-thumb"
-                  style={{ maxWidth: 200 }}
                 />
               </div>
             )}
           </div>
-          <button onClick={save}>Save</button>
-          <button onClick={() => setEditing(false)}>Cancel</button>
+          <div className="post-details-actions">
+            <button className="save" onClick={save}>Save</button>
+            <button className="cancel" onClick={() => setEditing(false)}>Cancel</button>
+          </div>
         </div>
       ) : (
         <div>
-          <h2>{post.title}</h2>
+          <h2 className="post-details-title">{post.title}</h2>
           {post.thumbnail && (
-            <div style={{ marginBottom: 12 }}>
+            <div className="post-details-thumbnail">
               <img
                 src={getMediaUrl(post.thumbnail)}
                 alt="thumbnail"
-                style={{
-                  maxWidth: "100%",
-                  height: "auto",
-                  border: "1px solid #ddd",
-                }}
               />
             </div>
           )}
-          <p>{post.content}</p>
-          <small>By {post.author?.username || "anonymous"}</small>
+          <p className="post-details-content">{post.content}</p>
+          <small className="post-details-author">By {post.author?.username || "anonymous"}</small>
           {canEdit && (
-            <div style={{ marginTop: 10 }}>
-              <button onClick={() => setEditing(true)}>Edit</button>
-              <button onClick={remove} style={{ marginLeft: 8 }}>
-                Delete
-              </button>
+            <div className="post-details-actions">
+              <button className="edit" onClick={() => setEditing(true)}>Edit</button>
+              <button className="delete" onClick={remove}>Delete</button>
             </div>
           )}
         </div>
       )}
-      {msg && <p>{msg}</p>}
+      {msg && (
+        <p className={msg.includes("Updated") ? "form-message success" : "form-message error"}>
+          {msg}
+        </p>
+      )}
     </div>
   );
 }

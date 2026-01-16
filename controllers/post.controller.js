@@ -186,3 +186,16 @@ exports.searchPosts = async (req, res) => {
     res.status(500).json({ message: "Lỗi server", error: err.message });
   }
 };
+
+// Lấy các bài viết của user hiện tại
+exports.getMyPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({ author: req.user.id })
+      .sort({ createdAt: -1 })
+      .populate("author", "username");
+
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ message: "Lỗi server", error: err.message });
+  }
+};

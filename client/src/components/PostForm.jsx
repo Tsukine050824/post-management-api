@@ -29,7 +29,10 @@ export default function PostForm({ token }) {
   }
 
   return (
-    <form onSubmit={submit} style={{ display: "grid", gap: 8 }}>
+    <form onSubmit={submit} className="form-container">
+      <h2 style={{ textAlign: "center", marginBottom: "10px", color: "#667eea" }}>
+        Create New Post
+      </h2>
       <input
         placeholder="Title"
         value={title}
@@ -41,26 +44,29 @@ export default function PostForm({ token }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => {
-          const f = e.target.files[0];
-          setFile(f);
-          setPreview(f ? URL.createObjectURL(f) : null);
-        }}
-      />
+      <div className="file-input-container">
+        <label>Thumbnail Image (optional)</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const f = e.target.files[0];
+            setFile(f);
+            setPreview(f ? URL.createObjectURL(f) : null);
+          }}
+        />
+      </div>
       {preview && (
-        <div>
-          <img
-            src={preview}
-            alt="preview"
-            style={{ maxWidth: 200, marginTop: 8 }}
-          />
+        <div className="file-preview">
+          <img src={preview} alt="preview" />
         </div>
       )}
-      <button type="submit">Create</button>
-      {msg && <p>{msg}</p>}
+      <button type="submit">Create Post</button>
+      {msg && (
+        <p className={msg.includes("Created") ? "form-message success" : "form-message error"}>
+          {msg}
+        </p>
+      )}
     </form>
   );
 }

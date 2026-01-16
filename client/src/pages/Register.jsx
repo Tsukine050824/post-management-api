@@ -18,7 +18,10 @@ export default function Register({ onRegistered }) {
   }
 
   return (
-    <form onSubmit={submit} style={{ display: "grid", gap: 8 }}>
+    <form onSubmit={submit} className="form-container">
+      <h2 style={{ textAlign: "center", marginBottom: "10px", color: "#667eea" }}>
+        Register
+      </h2>
       <input
         placeholder="Username"
         value={username}
@@ -33,7 +36,11 @@ export default function Register({ onRegistered }) {
         required
       />
       <button type="submit">Register</button>
-      {msg && <p>{msg}</p>}
+      {msg && (
+        <p className={msg.includes("Registered") ? "form-message success" : "form-message error"}>
+          {msg}
+        </p>
+      )}
     </form>
   );
 }

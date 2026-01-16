@@ -133,3 +133,74 @@ export async function register(credentials) {
   }
   return res.json();
 }
+
+// Account functions
+export async function getProfile(token) {
+  const res = await fetch(`${API_URL}/auth/profile`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`Get profile failed: ${res.status} ${text}`);
+  }
+  return res.json();
+}
+
+export async function updateAvatar(formData, token) {
+  const url = token
+    ? `${API_URL}/auth/avatar?token=${encodeURIComponent(token)}`
+    : `${API_URL}/auth/avatar`;
+  const res = await fetch(url, {
+    method: "PUT",
+    body: formData,
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`Update avatar failed: ${res.status} ${text}`);
+  }
+  return res.json();
+}
+
+export async function changePassword(data, token) {
+  const res = await fetch(`${API_URL}/auth/change-password`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`Change password failed: ${res.status} ${text}`);
+  }
+  return res.json();
+}
+
+export async function getMyPosts(token) {
+  const res = await fetch(`${API_URL}/posts/my-posts`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`Get my posts failed: ${res.status} ${text}`);
+  }
+  return res.json();
+}
+
+export async function updateUsername(username, token) {
+  const res = await fetch(`${API_URL}/auth/username`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ username }),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`Update username failed: ${res.status} ${text}`);
+  }
+  return res.json();
+}

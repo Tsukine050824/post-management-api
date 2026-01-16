@@ -20,42 +20,26 @@ export default function PostList(props) {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (loading) return <p className="loading">Loading...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div>
-      {posts.length === 0 && <p>No posts yet.</p>}
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      {posts.length === 0 && <p className="post-empty">No posts yet.</p>}
+      <ul className="post-list">
         {posts.map((p) => (
-          <li
-            key={p._id}
-            style={{
-              border: "1px solid #ddd",
-              padding: 10,
-              marginBottom: 10,
-              display: "flex",
-              gap: 12,
-              alignItems: "flex-start",
-            }}
-          >
+          <li key={p._id} className="post-item">
             {p.thumbnail && (
-              <div style={{ width: 80, height: 80, flex: "0 0 80px" }}>
+              <div className="post-thumbnail">
                 <img
                   src={getMediaUrl(p.thumbnail)}
                   alt="thumb"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    border: "1px solid #eee",
-                  }}
                 />
               </div>
             )}
-            <div style={{ flex: 1 }}>
+            <div className="post-content">
               <h3
-                style={{ cursor: "pointer", color: "#0366d6" }}
+                className="post-title"
                 onClick={() =>
                   props && typeof props.onSelect === "function"
                     ? props.onSelect(p._id)
@@ -64,8 +48,8 @@ export default function PostList(props) {
               >
                 {p.title}
               </h3>
-              <p>{p.content || p.desc}</p>
-              <small>
+              <p className="post-description">{p.content || p.desc}</p>
+              <small className="post-author">
                 By {p.author?.username || p.username || "anonymous"}
               </small>
             </div>

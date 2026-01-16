@@ -62,4 +62,18 @@ router.post("/register", authController.register);
  */
 router.post("/login", authController.login);
 
+// Các route cần xác thực
+const verifyToken = require("../middlewares/verifyToken");
+const upload = require("../middlewares/upload");
+
+router.get("/profile", verifyToken, authController.getProfile);
+router.put(
+  "/avatar",
+  verifyToken,
+  upload.single("avatar"),
+  authController.updateAvatar
+);
+router.put("/change-password", verifyToken, authController.changePassword);
+router.put("/username", verifyToken, authController.updateUsername);
+
 module.exports = router;

@@ -19,7 +19,10 @@ export default function Login({ onLogin }) {
   }
 
   return (
-    <form onSubmit={submit} style={{ display: "grid", gap: 8 }}>
+    <form onSubmit={submit} className="form-container">
+      <h2 style={{ textAlign: "center", marginBottom: "10px", color: "#667eea" }}>
+        Login
+      </h2>
       <input
         placeholder="Username"
         value={username}
@@ -34,7 +37,7 @@ export default function Login({ onLogin }) {
         required
       />
       <button type="submit">Login</button>
-      {msg && <p style={{ color: "red" }}>{msg}</p>}
+      {msg && <p className="form-message error">{msg}</p>}
     </form>
   );
 }

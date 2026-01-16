@@ -6,6 +6,8 @@ const upload = require("../middlewares/upload");
 
 // Route tìm kiếm cần đặt trước để không bị nhầm với :id
 router.get("/search", postController.searchPosts);
+// Route lấy posts của user hiện tại
+router.get("/my-posts", verifyToken, postController.getMyPosts);
 
 // Các route chính
 router.get("/", postController.getAllPosts);
